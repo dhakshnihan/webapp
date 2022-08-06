@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import moment from "moment";
 import { gapi } from 'gapi-script';
+import { getApt_URL} from "../utils/URL";
 
 export default function CreateGoogleEvent (Id) {
     
@@ -21,7 +22,7 @@ export default function CreateGoogleEvent (Id) {
 
     
 
-        let urlApt = "https://exapp-server.herokuapp.com/exult/aptAPI/fetchApt/" + Id;
+        let urlApt = getApt_URL + Id;
 
         axios.get(urlApt)
             .then(response =>   addEvent(response.data) )

@@ -6,6 +6,7 @@ import React, { Component } from "react";
 
 import "../css/css/menu.css";
 
+
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
@@ -27,6 +28,7 @@ import AdminAddPatsBulk from "./AdminAddPatsBulk";
 import { Redirect } from "react-router-dom";
 import AdminPatientDetailsEdit from "./AdminPatientDetailsEdit";
 import Calendar from "./Calendar";
+import "../utils/URL";
 
 
 

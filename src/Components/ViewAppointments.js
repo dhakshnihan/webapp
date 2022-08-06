@@ -10,9 +10,7 @@ import { PatDetails } from './PatientData';
 import Calendar from './Calendar';
 import moment from "moment";
 import CreateGoogleEvent from './CreateEvent';
-
-
-
+import {getAllApts_URL,docDetails_URL,editApt_URL,cancelApt_URL,confirmApt_URL} from "../utils/URL";
 
 
 export default class ViewAppointments extends Component {
@@ -54,12 +52,12 @@ export default class ViewAppointments extends Component {
     }
 
     getDetails = () => {
-        let url = "https://exapp-server.herokuapp.com/exult/aptAPI/getApt/" + this.props.match.params.userId
+        let url = getAllApts_URL + this.props.match.params.userId
         axios.get(url)
             .then(response => this.setState({ aptData: response.data, errorMessage: "", successMessage: "success" }))
             .catch(error => { if (error.response) this.setState({ errorMessage: "No doctor exist" }) })
 
-        let urlDoctor = "https://exapp-server.herokuapp.com/exult/docAPI/details";
+        let urlDoctor = docDetails_URL;
 
         axios.get(urlDoctor)
             .then(response => this.setState({ doctorsData: response.data }))
@@ -68,7 +66,7 @@ export default class ViewAppointments extends Component {
 
 
         if (sessionStorage.getItem("userId") == 1) {
-            let url = "https://exapp-server.herokuapp.com/exult/aptAPI/getApts"
+            let url = getAllApts_URL
             axios.get(url)
                 .then(response => this.setState({ aptData: response.data, errorMessage: "", successMessage: "success" }))
                 .catch(error => { if (error.response) this.setState({ errorMessage: "No doctor exist" }) })
@@ -93,7 +91,7 @@ export default class ViewAppointments extends Component {
 
             console.log(aptData);
 
-            axios.post('https://exapp-server.herokuapp.com/exult/aptAPI/editApt/' + this.state.formvalue.aptId, aptData)
+            axios.post( editApt_URL + this.state.formvalue.aptId, aptData)
                 .then(response => this.setState({
 
                     successMessage: "Appointment Request Submitted Successfull !!",
@@ -178,7 +176,7 @@ export default class ViewAppointments extends Component {
     }
     handleAptCancel = (event) => {
         console.log(event.target.value)
-        let url = "https://exapp-server.herokuapp.com/exult/aptAPI/cancelApt/" + event.target.value
+        let url = cancelApt_URL + event.target.value
         axios.post(url)
             .then(response => this.setState({
 
@@ -203,7 +201,7 @@ export default class ViewAppointments extends Component {
 
         CreateGoogleEvent(event.target.value)
 
-        let url = "https://exapp-server.herokuapp.com/exult/aptAPI/confirmApt/" + event.target.value
+        let url = confirmApt_URL + event.target.value
         axios.put(url)
             .then(response => this.setState({
 

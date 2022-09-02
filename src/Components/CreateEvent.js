@@ -2,31 +2,43 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import moment from "moment";
 import { gapi } from 'gapi-script';
-import { getApt_URL} from "../utils/URL";
+import { getApt_URL,confirmApt_URL} from "../utils/URL";
 
-export default function CreateGoogleEvent (Id) {
+export default function CreateGoogleEvent (  Id) {
     
         
-        // this.state = {
-            
-           
-        //     aptId: Id,
-        //     docMail: "",
-        //     patMail: "",
-        //     aptData: {}
+      const setAptConfirm = (event,data) => {
 
-        // }
-    
+         let url = confirmApt_URL + Id
+                            console.log(data)
+                            console.log(event.htmlLink.toString())
+                            // // "https://www.google.com/calendar/event?eid=b2FiYmRrdDZ2bmNuYWdkOW1kOW5rY204ZGsgc2luZ2FtcGFsbGlha2hpbEBt"
+                            // var eid= event.htmlLink.toString().match('\/d\/(eid=.+)\/')
+                            // console.log(eid)
+                            let aptData = {
+                                aptId: data.aptId,
+                                aptPatient: data.aptPatient,
+                                aptDoctor: data.aptDoctor,
+                                aptTime: data.aptTime,
+                                aptDate: data.aptDate,
+                                aptStatus: event.htmlLink.toString()
+                            }
 
-  
-
-    
+                            axios.post(url,aptData)
+                                .then(response =>console.log(response)).catch(error => {
+                                    if (error.response) {
+                                        console.log("Fail")
+                                    } else {
+                                        console.log("server down")
+                                    }
+                                });
+      }
 
         let urlApt = getApt_URL + Id;
 
         axios.get(urlApt)
             .then(response =>   addEvent(response.data) )
-            .catch(error => { if (error.response) this.setState({ errorMessage: "No doctor exist" }) })
+            .catch(error => { if (error.response) console.log("error") })
     
 
     let addEvent = (data) => {
@@ -47,13 +59,15 @@ export default function CreateGoogleEvent (Id) {
 
                 gapi.auth2.getAuthInstance().signIn()
 
-            )
-                .then(() => {
+            ).then(() => {
 
-                    console.log(data)
+                    console.log(data.aptDate)
                     let time = moment(moment(data.aptDate,"MM-DD-YYYY").format("DD-MM-YYYY") + ' ' + data.aptTime)
-                    console.log(time)
+                    // let start = moment(data.aptDate + ' ' + data.aptTime)
+                    
                     let start = new Date(moment(data.aptDate,"MM-DD-YYYY").format("DD-MM-YYYY") + ' ' + data.aptTime)
+                    
+                    console.log(start)
                     let end = new Date();
                     end.setTime(start.getTime() + (15 * 60000))
                     console.log(end)
@@ -85,17 +99,35 @@ export default function CreateGoogleEvent (Id) {
                         }
                     }
 
-
                     var request = gapi.client.calendar.events.insert({
                         'calendarId': data.aptDoctor,
                         'resource': event,
                     })
 
                     request.execute(event => {
-                        console.log(event)
+                        
+                        
+                            // let url = confirmApt_URL + Id
+                            // console.log(event.htmlLink.toString())
+                            // axios.put(url,null ,{params: { googleEvent : event.htmlLink.toString()}})
+                            //     .then(response =>console.log(response)).catch(error => {
+                            //         if (error.response) {
+                            //             console.log("Fail")
+                            //         } else {
+                            //             console.log("server down")
+                            //         }
+                            //     });
+                            console.log(event)
+                        setAptConfirm(event,data)
+                        
+                        // return event.htmlLink.toString()
                         window.open(event.htmlLink)
+                        
                     })
+                    
 
+                    
+                   
 
                 })
 

@@ -1,7 +1,9 @@
 {
   "name": "exapp",
 
-  "version": "0.1.0",
+  "homepage": "http://bookappoint.com/",
+
+  "version": "0.2.0",
 
   "private": false,
 

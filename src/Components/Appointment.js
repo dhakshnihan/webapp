@@ -140,9 +140,13 @@ export default class Appointment extends Component {
     handleCallback = (startTime) => {
         console.log(startTime)
         const { formvalue } = this.state;
-        
-         this.setState({formvalue:{ ...formvalue,aptTime: moment(startTime).format('HH:mm'), aptDate: moment(startTime).format("DD-MM-YYYY")}  })
-    console.log(this.state.formvalue)
+
+        this.setState({ formvalue: { ...formvalue, aptTime: moment(startTime).format('HH:mm'), 
+                                                    aptDate: moment(startTime).format("DD-MM-YYYY") } },
+                                                    ()=>{
+                                                        console.log(this.state.formvalue)
+                                                        this.SubmitAppointment();
+                                                    })
         }
 
     calendar = (event) => {
@@ -274,15 +278,6 @@ export default class Appointment extends Component {
                                             </select>
                                             </div>
                                             
-                                            
-                                            
-                                            <div className="" >
-                                            <div className="form-group">
-
-                                            {/* <Calendar timeCallback={this.handleCallback}  doc={this.state.doctorMail} pat={this.state.patientMail} /> */}
-
-                                             </div>
-                                        </div>
                                     </div>
 
                                     </div>
@@ -294,7 +289,7 @@ export default class Appointment extends Component {
                                 {this.calendar()}
                                 
                                 <div className="form-group">
-                                        <button type="submit" value="" className="btn btn-primary" onClick={this.handleSubmit}><b>Book Appointment</b></button>
+                                        {/* <button type="submit" value="" className="btn btn-primary" onClick={this.handleSubmit}><b>Book Appointment</b></button> */}
 
                                         <h6 type="text" className="alert-info" >{this.state.errorMessage}</h6>
                                         <h6 type="text" className="alert-success" >{this.state.successMessage}</h6>

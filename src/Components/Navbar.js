@@ -107,7 +107,9 @@ class NavBar extends Component {
                                     <li className="nav-item cta "><a href="doctors.html" className="nav-link">Doctors</a></li>
                                     <li className="nav-item cta "><a href="blog.html" className="nav-link">Blog</a></li>
                                     <li className="nav-item cta "><Link  className="nav-link" to="/contactus/">Contact</Link></li>
+                                    {sessionStorage.getItem("userId") >= 1000 ? 
                                     <li className="nav-item cta "><Link  className="nav-link" to="/appointment/">Book Appointment</Link></li>
+                                    : null}
                                     
                                     {!this.state.logged_userId ? (
                                         <li className="nav-item cta"><Link className="nav-link" to="/Login"><b>Log In</b></Link></li>

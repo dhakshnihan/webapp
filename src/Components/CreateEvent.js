@@ -4,14 +4,14 @@ import moment from "moment";
 import { gapi } from 'gapi-script';
 import { getApt_URL,confirmApt_URL} from "../utils/URL";
 
-export default function CreateGoogleEvent (  Id) {
+export default function CreateGoogleEvent (Id) {
     
         
       const setAptConfirm = (event,data) => {
 
          let url = confirmApt_URL + Id
                             console.log(data)
-                            console.log(event.htmlLink.toString())
+                            // console.log(event.htmlLink.toString())
                             // // "https://www.google.com/calendar/event?eid=b2FiYmRrdDZ2bmNuYWdkOW1kOW5rY204ZGsgc2luZ2FtcGFsbGlha2hpbEBt"
                             // var eid= event.htmlLink.toString().match('\/d\/(eid=.+)\/')
                             // console.log(eid)
@@ -21,7 +21,7 @@ export default function CreateGoogleEvent (  Id) {
                                 aptDoctor: data.aptDoctor,
                                 aptTime: data.aptTime,
                                 aptDate: data.aptDate,
-                                aptStatus: event.htmlLink.toString()
+                                aptStatus: event.htmlLink
                             }
 
                             axios.post(url,aptData)
@@ -50,8 +50,8 @@ export default function CreateGoogleEvent (  Id) {
             gapi.client.load('client', () => console.log('bam!'))
 
             gapi.client.init({
-                apiKey: "AIzaSyDrVkS-ZRFRmTsJvLQTNpshIfEGyr2XhhI",
-                clientId: "229521899518-v2nb1anhnuj8n1rkqsi0qrpjojkl3l7r.apps.googleusercontent.com",
+                apiKey: "AIzaSyCr3hrrjQvtvj9Z5-slKS3XwSl55o9B17g",
+                clientId: "693143304041-757ag2eaqnk82dl7l5fstcda62b9838j.apps.googleusercontent.com",
                 discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
                 scope: "https://www.googleapis.com/auth/calendar.events"
             }).then(
@@ -118,24 +118,17 @@ export default function CreateGoogleEvent (  Id) {
                             //         }
                             //     });
                             console.log(event)
-                        setAptConfirm(event,data)
-                        
+                            if(event === 200){
+                                setAptConfirm(event,data)
+                                window.open(event.htmlLink)
+                            }                        
                         // return event.htmlLink.toString()
-                        window.open(event.htmlLink)
+                        
                         
                     })
-                    
-
-                    
-                   
 
                 })
 
-
-
         })
     }
-
-
-
 }
